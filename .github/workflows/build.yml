@@ -1,0 +1,16 @@
+name: Build EXE
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pyinstaller pynput schedule pywin32
+      - run: pyinstaller --onefile --windowed --name MacroRecorder --hidden-import win32gui --hidden-import win32con --hidden-import win32api --hidden-import win32process macro_recorder.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MacroRecorder.exe
+          path: dist/MacroRecorder.exe
